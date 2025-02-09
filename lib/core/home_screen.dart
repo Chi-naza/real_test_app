@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:real_est_app/constants/app_colors.dart';
 import 'package:real_est_app/constants/app_images.dart';
 import 'package:real_est_app/utils/size_config.dart';
 import 'package:real_est_app/widgets/home_room_display_widget.dart';
+import 'package:real_est_app/widgets/location_text_container_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,40 +14,125 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  // timer
+  late Timer _timerBuy;
+  late Timer _timerRent;
 
-  late Animation<double> locationFadeAnimation;
-  late Animation<double> textFadeAnimation;
+  // animation controllers
+  late AnimationController _startAnimationController;
+  late AnimationController _bodyAnimationController;
+  late AnimationController _textAnimationController;
+
+  late Animation<double> textFadeAnimation1;
+  late Animation<double> textFadeAnimation2;
   late Animation<double> scaleProfilePicAnimation;
   late Animation<double> scaleStatContainersAnimation;
   late Animation<Offset> slideBodyAnimation;
 
+  // For the stats
+  int counterForBuy = 0;
+  int counterForRent = 0;
+
   @override
   void initState() {
-    _controller = AnimationController(
+    _startAnimationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2500),
+      duration: const Duration(milliseconds: 2000),
     );
 
-    // fade
-    locationFadeAnimation =
-        Tween<double>(begin: 0, end: 1).animate(_controller);
-    textFadeAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
+    _textAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
 
-    //slide
-    slideBodyAnimation = Tween<Offset>(begin: Offset(0, 20), end: Offset.zero)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.ease));
+    _bodyAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2700),
+    );
 
     // scale
     scaleProfilePicAnimation =
-        Tween<double>(begin: 0, end: 1).animate(_controller);
-    scaleStatContainersAnimation =
-        Tween<double>(begin: 0, end: 1).animate(_controller);
+        Tween<double>(begin: 0, end: 1).animate(_startAnimationController);
 
-    // _controller.forward();
+    _startAnimationController.forward();
+
+    // Start text animation after scaling picture
+    _startAnimationController.addListener(() {
+      if (_startAnimationController.isCompleted) {
+        _textAnimationController.forward();
+      }
+    });
+
+    textFadeAnimation1 = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _textAnimationController,
+        curve: Interval(0, 0.5),
+      ),
+    );
+
+    textFadeAnimation2 = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _textAnimationController,
+        curve: Interval(0.5, 1),
+      ),
+    );
+
+    // start body animation when text is done
+    _textAnimationController.addListener(() {
+      if (_textAnimationController.isCompleted) {
+        _bodyAnimationController.forward();
+      }
+    });
+
+    //slide
+    slideBodyAnimation = Tween<Offset>(begin: Offset(0, 20), end: Offset.zero)
+        .animate(CurvedAnimation(
+            parent: _bodyAnimationController, curve: Curves.ease));
+    // scale
+    scaleStatContainersAnimation =
+        Tween<double>(begin: 0, end: 1).animate(_bodyAnimationController);
+
+    // Start counter
+    startBuyCounter();
+    startRentCounter();
+
     super.initState();
+  }
+
+  void startBuyCounter() {
+    _timerBuy = Timer.periodic(const Duration(milliseconds: 0), (t) {
+      if (counterForBuy == 1034) {
+        setState(() {
+          t.cancel();
+        });
+      } else {
+        setState(() {
+          counterForBuy++;
+        });
+      }
+    });
+  }
+
+  void startRentCounter() {
+    _timerBuy = Timer.periodic(const Duration(milliseconds: 0), (t) {
+      if (counterForRent == 2212) {
+        setState(() {
+          t.cancel();
+        });
+      } else {
+        setState(() {
+          counterForRent++;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timerBuy.cancel();
+    _timerRent.cancel();
+    super.dispose();
   }
 
   @override
@@ -80,31 +168,7 @@ class _HomeScreenState extends State<HomeScreen>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white,
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.location_on,
-                                  color: AppColors.gold,
-                                ),
-                                FadeTransition(
-                                  opacity: locationFadeAnimation,
-                                  child: Text(
-                                    "Saint Petersburg",
-                                    style: TextStyle(
-                                      color: AppColors.gold,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          LocationTextContainerWidget(),
                           ScaleTransition(
                             scale: scaleProfilePicAnimation,
                             child: CircleAvatar(
@@ -115,35 +179,43 @@ class _HomeScreenState extends State<HomeScreen>
                         ],
                       ),
                       SizedBox(height: SizeConfig.height(context, h: 40)),
-                      FadeTransition(
-                        opacity: textFadeAnimation,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FadeTransition(
+                            opacity: textFadeAnimation1,
+                            child: Text(
                               "Hi Marina",
                               style: TextStyle(
                                 fontSize: SizeConfig.height(context, h: 50),
                                 color: AppColors.gold,
                               ),
                             ),
-                            Text(
-                              "let's select your",
-                              style: TextStyle(
-                                fontSize: SizeConfig.height(context, h: 70),
-                                fontWeight: FontWeight.w400,
-                              ),
+                          ),
+                          FadeTransition(
+                            opacity: textFadeAnimation2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "let's select your",
+                                  style: TextStyle(
+                                    fontSize: SizeConfig.height(context, h: 70),
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Text(
+                                  "perfect place",
+                                  style: TextStyle(
+                                    height: 0,
+                                    fontSize: SizeConfig.height(context, h: 70),
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "perfect place",
-                              style: TextStyle(
-                                height: 0,
-                                fontSize: SizeConfig.height(context, h: 70),
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: SizeConfig.height(context, h: 50)),
                       Row(
@@ -174,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       height:
                                           SizeConfig.height(context, h: 50)),
                                   Text(
-                                    "1034",
+                                    "${counterForBuy.toString().substring(0, 1)} ${counterForBuy.toString().substring(1)}", // "1034",
                                     style: TextStyle(
                                       fontSize:
                                           SizeConfig.height(context, h: 100),
@@ -219,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       height:
                                           SizeConfig.height(context, h: 50)),
                                   Text(
-                                    "2 212",
+                                    "${counterForRent.toString().substring(0, 1)} ${counterForRent.toString().substring(1)}", // "2 212",
                                     style: TextStyle(
                                       fontSize:
                                           SizeConfig.height(context, h: 90),

@@ -16,9 +16,26 @@ class SearchScreen extends StatefulWidget {
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen>
+    with SingleTickerProviderStateMixin {
   int selectedMenuVal = 2;
   bool isWithoutLayer = false;
+
+  late AnimationController _controller;
+  late Animation<double> scaleTextFieldAndFilterAnimation;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+    scaleTextFieldAndFilterAnimation =
+        Tween<double>(begin: 0, end: 1).animate(_controller);
+
+    _controller.forward();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,35 +66,41 @@ class _SearchScreenState extends State<SearchScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(top: 10),
-                                filled: true,
-                                fillColor: Colors.white,
-                                hintText: "Saint Petersburg",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                prefixIcon: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Iconsax.search_normal_1,
+                            child: ScaleTransition(
+                              scale: scaleTextFieldAndFilterAnimation,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(top: 10),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  hintText: "Saint Petersburg",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  prefixIcon: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Iconsax.search_normal_1,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                           SizedBox(width: SizeConfig.width(context, w: 12)),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            height: SizeConfig.height(context, h: 90),
-                            width: SizeConfig.height(context, h: 90),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              border: Border.all(width: 0),
+                          ScaleTransition(
+                            scale: scaleTextFieldAndFilterAnimation,
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              height: SizeConfig.height(context, h: 90),
+                              width: SizeConfig.height(context, h: 90),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(width: 0),
+                              ),
+                              child: Icon(Iconsax.setting_4),
                             ),
-                            child: Icon(Iconsax.setting_4),
                           ),
                         ],
                       ),
@@ -162,14 +185,17 @@ class _SearchScreenState extends State<SearchScreen> {
                           spacing: SizeConfig.height(context, h: 20),
                           children: [
                             // stack
-                            SearchScreenCard(
-                              isOnlyIcon: true,
-                              icon: SvgPicture.asset(
-                                AppSvgs.stacks,
-                                height: SizeConfig.height(context, h: 60),
-                                width: SizeConfig.height(context, h: 60),
-                                colorFilter: ColorFilter.mode(
-                                    Colors.white, BlendMode.srcIn),
+                            ScaleTransition(
+                              scale: scaleTextFieldAndFilterAnimation,
+                              child: SearchScreenCard(
+                                isOnlyIcon: true,
+                                icon: SvgPicture.asset(
+                                  AppSvgs.stacks,
+                                  height: SizeConfig.height(context, h: 60),
+                                  width: SizeConfig.height(context, h: 60),
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.white, BlendMode.srcIn),
+                                ),
                               ),
                             ),
                             // send
@@ -194,12 +220,15 @@ class _SearchScreenState extends State<SearchScreen> {
                                   },
                                 );
                               },
-                              child: SearchScreenCard(
-                                isOnlyIcon: true,
-                                icon: Icon(
-                                  Iconsax.send_2,
-                                  color: Colors.white,
-                                  size: SizeConfig.height(context, h: 60),
+                              child: ScaleTransition(
+                                scale: scaleTextFieldAndFilterAnimation,
+                                child: SearchScreenCard(
+                                  isOnlyIcon: true,
+                                  icon: Icon(
+                                    Iconsax.send_2,
+                                    color: Colors.white,
+                                    size: SizeConfig.height(context, h: 60),
+                                  ),
                                 ),
                               ),
                             ),
@@ -207,7 +236,10 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                         SizedBox(width: SizeConfig.width(context, w: 120)),
                         // List of variants
-                        SearchScreenCard(isOnlyIcon: false),
+                        ScaleTransition(
+                          scale: scaleTextFieldAndFilterAnimation,
+                          child: SearchScreenCard(isOnlyIcon: false),
+                        ),
                       ],
                     ),
                   ),

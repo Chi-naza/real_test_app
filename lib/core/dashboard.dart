@@ -30,7 +30,9 @@ class _DashboardState extends State<Dashboard>
     slideNavBarAnimation = Tween<Offset>(begin: Offset(0, 30), end: Offset.zero)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.ease));
 
-    _controller.forward();
+    Future.delayed(const Duration(seconds: 6), () {
+      _controller.forward();
+    });
 
     super.initState();
   }
@@ -90,13 +92,37 @@ class _DashboardState extends State<Dashboard>
     // search
     const SearchScreen(),
     // messaging
-    const Scaffold(body: Center(child: Text("Messaging"))),
+    const Scaffold(
+      backgroundColor: AppColors.secondaryBackground,
+      body: Center(
+        child: Text(
+          "Messaging",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    ),
     // home
     const HomeScreen(),
     // favorites
-    const Scaffold(body: Center(child: Text("Favorites"))),
+    const Scaffold(
+      backgroundColor: AppColors.secondaryBackground,
+      body: Center(
+        child: Text(
+          "Favorites",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    ),
     // profile
-    const Scaffold(body: Center(child: Text("Profile"))),
+    const Scaffold(
+      backgroundColor: AppColors.secondaryBackground,
+      body: Center(
+        child: Text(
+          "Profile",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    ),
   ];
 
   List<Map<String, dynamic>> navbarItems = [
