@@ -12,55 +12,75 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard>
+    with SingleTickerProviderStateMixin {
   int navIndex = 2;
+
+  late AnimationController _controller;
+
+  late Animation<Offset> slideNavBarAnimation;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 3000),
+    );
+
+    slideNavBarAnimation = Tween<Offset>(begin: Offset(0, 30), end: Offset.zero)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.ease));
+
+    _controller.forward();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: dashboardScreens[navIndex],
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: AppColors.darkBg,
-        onPressed: () {},
-        label: Container(
-          width: SizeConfig.width(context, w: 245),
-          decoration: BoxDecoration(
-              // color: Colors.red,
-              // borderRadius: BorderRadius.circular(20),
-              ),
-          child: Row(
-            spacing: 13,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(navbarItems.length, (index) {
-              var item = navbarItems[index];
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    navIndex = index;
-                  });
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  padding: EdgeInsets.all(navIndex == index ? 12 : 10),
-                  decoration: BoxDecoration(
-                    color: navIndex == index
-                        ? AppColors.primary
-                        : Colors.black.withValues(alpha: 0.7),
-                    shape: BoxShape.circle,
+      floatingActionButton: SlideTransition(
+        position: slideNavBarAnimation,
+        child: FloatingActionButton.extended(
+          backgroundColor: AppColors.darkBg,
+          onPressed: () {},
+          label: SizedBox(
+            width: SizeConfig.width(context, w: 245),
+            child: Row(
+              spacing: 13,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(navbarItems.length, (index) {
+                var item = navbarItems[index];
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      navIndex = index;
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    padding: EdgeInsets.all(navIndex == index ? 12 : 10),
+                    decoration: BoxDecoration(
+                      color: navIndex == index
+                          ? AppColors.primary
+                          : Colors.black.withValues(alpha: 0.7),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      item["icon"],
+                      size: 22.0,
+                      color: Colors.white,
+                    ),
                   ),
-                  child: Icon(
-                    item["icon"],
-                    size: 22.0,
-                    color: Colors.white,
-                  ),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          extendedPadding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.screenWidth(context) * 0.02, vertical: 10),
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        extendedPadding: EdgeInsets.symmetric(
-            horizontal: SizeConfig.screenWidth(context) * 0.02, vertical: 10),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
