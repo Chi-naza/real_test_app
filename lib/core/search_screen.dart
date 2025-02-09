@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:real_est_app/constants/app_colors.dart';
 
 import 'package:real_est_app/constants/app_images.dart';
 import 'package:real_est_app/constants/app_svgs.dart';
@@ -47,17 +48,21 @@ class _SearchScreenState extends State<SearchScreen>
               AppImages.map,
             ),
             fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              AppColors.secondaryBackground,
+              BlendMode.softLight,
+            ),
           ),
         ),
         child: Stack(
           children: [
             // Main
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            ListView(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   children: [
-                    SizedBox(height: SizeConfig.height(context, h: 80)),
+                    SizedBox(height: SizeConfig.height(context, h: 40)),
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: SizeConfig.width(context, w: 20),

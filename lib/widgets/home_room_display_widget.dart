@@ -9,6 +9,7 @@ class HomeRoomDisplayWidget extends StatelessWidget {
   final String image;
   final double? height;
   final double? top;
+  final double? sliderWidth;
 
   const HomeRoomDisplayWidget({
     super.key,
@@ -16,6 +17,7 @@ class HomeRoomDisplayWidget extends StatelessWidget {
     required this.image,
     this.height,
     this.top,
+    this.sliderWidth,
   });
 
   @override
@@ -62,7 +64,7 @@ class HomeRoomDisplayWidget extends StatelessWidget {
                         foregroundColor: Colors.white,
                         replaceBackgroundColor: Colors.transparent,
                         iconColor: Colors.black87,
-                        width: double.maxFinite,
+                        width: sliderWidth ?? double.maxFinite,
                       ),
                     ),
                   ),

@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:real_est_app/utils/size_config.dart';
 
 class SwipperWidget extends StatefulWidget {
   final String? timer;
@@ -53,7 +55,7 @@ class SwipperWidget extends StatefulWidget {
 
 class SwipperWidgetState extends State<SwipperWidget> {
   double _position = 0;
-  int _duration = 0;
+  int _duration = 1500;
   bool _isSwipe = false;
 
   double getPosition() {
@@ -97,6 +99,10 @@ class SwipperWidgetState extends State<SwipperWidget> {
     } else {
       _position = 0;
     }
+
+    if (kDebugMode) {
+      print("POSITION - $_position"); // testing
+    }
   }
 
   void swipeReleased(details) {
@@ -105,6 +111,16 @@ class SwipperWidgetState extends State<SwipperWidget> {
       _isSwipe = true;
     }
     updatePosition(details);
+  }
+
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 8), () {
+      setState(() {
+        _position = (widget.width - SizeConfig.width(context, w: 50));
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -140,8 +156,8 @@ class SwipperWidgetState extends State<SwipperWidget> {
           ),
           AnimatedPositioned(
             duration: Duration(milliseconds: _duration),
-            curve: Curves.bounceOut,
-            left: getPosition(),
+            curve: Curves.ease,
+            left: _position, // getPosition(), // todo
             child: GestureDetector(
               onPanUpdate: (details) => updatePosition(details),
               onPanEnd: (details) => swipeReleased(details),

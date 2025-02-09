@@ -337,6 +337,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         HomeRoomDisplayWidget(
                           text: 'Gladkova St., 25',
                           image: AppImages.room1,
+                          sliderWidth: SizeConfig.width(context, w: 320),
                         ),
                         SizedBox(height: SizeConfig.height(context, h: 20)),
                         Row(
@@ -349,6 +350,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 image: AppImages.staircase,
                                 height: SizeConfig.height(context, h: 700),
                                 top: SizeConfig.height(context, h: 560),
+                                sliderWidth: SizeConfig.width(context, w: 140),
                               ),
                             ),
                             Column(
@@ -360,6 +362,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     image: AppImages.room2,
                                     height: SizeConfig.height(context, h: 340),
                                     top: SizeConfig.height(context, h: 200),
+                                    sliderWidth:
+                                        SizeConfig.width(context, w: 140),
                                   ),
                                 ),
                                 SizedBox(
@@ -371,6 +375,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     image: AppImages.room3,
                                     height: SizeConfig.height(context, h: 340),
                                     top: SizeConfig.height(context, h: 200),
+                                    sliderWidth:
+                                        SizeConfig.width(context, w: 140),
                                   ),
                                 ),
                               ],

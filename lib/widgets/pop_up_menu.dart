@@ -17,12 +17,16 @@ void showCustomPopupMenu(
 
   await showMenu(
     context: context,
-    position: RelativeRect.fromLTRB(0, top - 200, left, 0),
+    position: RelativeRect.fromLTRB(0, top - 260, left, 0),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     color: Theme.of(context).scaffoldBackgroundColor,
     menuPadding: EdgeInsets.only(
       left: SizeConfig.width(context, w: 7),
       right: SizeConfig.width(context, w: 10),
+    ),
+    popUpAnimationStyle: AnimationStyle(
+      curve: Curves.ease,
+      duration: Duration(milliseconds: 2500),
     ),
     items: [
       popupMenuItem(
