@@ -36,9 +36,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    counterForBuy = 0;
-    counterForRent = 0;
-
     _startAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2000),
@@ -187,17 +184,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         children: [
                           FadeTransition(
                             opacity: textFadeAnimation1,
-                            child: GestureDetector(
-                              onTap: () {
-                                startBuyCounter();
-                                print("Yes");
-                              },
-                              child: Text(
-                                "Hi Marina",
-                                style: TextStyle(
-                                  fontSize: SizeConfig.height(context, h: 50),
-                                  color: AppColors.gold,
-                                ),
+                            child: Text(
+                              "Hi Marina",
+                              style: TextStyle(
+                                fontSize: SizeConfig.height(context, h: 50),
+                                color: AppColors.gold,
                               ),
                             ),
                           ),
