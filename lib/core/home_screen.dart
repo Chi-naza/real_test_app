@@ -16,8 +16,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   // timer
-  late Timer _timerBuy;
-  late Timer _timerRent;
+  Timer? _timerBuy;
+  Timer? _timerRent;
 
   // animation controllers
   late AnimationController _startAnimationController;
@@ -36,6 +36,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    counterForBuy = 0;
+    counterForRent = 0;
+
     _startAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2000),
@@ -101,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   void startBuyCounter() {
-    _timerBuy = Timer.periodic(const Duration(milliseconds: 0), (t) {
+    _timerBuy = Timer.periodic(const Duration(milliseconds: 10), (t) {
       if (counterForBuy == 1034) {
         setState(() {
           t.cancel();
@@ -115,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   void startRentCounter() {
-    _timerBuy = Timer.periodic(const Duration(milliseconds: 0), (t) {
+    _timerBuy = Timer.periodic(const Duration(milliseconds: 10), (t) {
       if (counterForRent == 2212) {
         setState(() {
           t.cancel();
@@ -130,8 +133,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _timerBuy.cancel();
-    _timerRent.cancel();
+    _timerBuy?.cancel();
+    _timerRent?.cancel();
     super.dispose();
   }
 
@@ -184,11 +187,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         children: [
                           FadeTransition(
                             opacity: textFadeAnimation1,
-                            child: Text(
-                              "Hi Marina",
-                              style: TextStyle(
-                                fontSize: SizeConfig.height(context, h: 50),
-                                color: AppColors.gold,
+                            child: GestureDetector(
+                              onTap: () {
+                                startBuyCounter();
+                                print("Yes");
+                              },
+                              child: Text(
+                                "Hi Marina",
+                                style: TextStyle(
+                                  fontSize: SizeConfig.height(context, h: 50),
+                                  color: AppColors.gold,
+                                ),
                               ),
                             ),
                           ),
