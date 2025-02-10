@@ -58,7 +58,6 @@ class _SearchScreenState extends State<SearchScreen>
           children: [
             // Main
             ListView(
-              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   children: [
@@ -104,7 +103,10 @@ class _SearchScreenState extends State<SearchScreen>
                                 shape: BoxShape.circle,
                                 border: Border.all(width: 0),
                               ),
-                              child: Icon(Iconsax.setting_4),
+                              child: Icon(
+                                Iconsax.setting_4,
+                                size: SizeConfig.width(context, w: 20),
+                              ),
                             ),
                           ),
                         ],

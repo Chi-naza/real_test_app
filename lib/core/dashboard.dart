@@ -47,10 +47,9 @@ class _DashboardState extends State<Dashboard>
           backgroundColor: AppColors.darkBg,
           onPressed: () {},
           label: SizedBox(
-            width: SizeConfig.width(context, w: 245),
+            width: SizeConfig.width(context, w: 280),
             child: Row(
-              spacing: 13,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(navbarItems.length, (index) {
                 var item = navbarItems[index];
                 return GestureDetector(

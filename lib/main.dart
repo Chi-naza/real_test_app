@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:real_est_app/constants/app_colors.dart';
 import 'package:real_est_app/core/dashboard.dart';
-import 'package:real_est_app/core/test_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

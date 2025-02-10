@@ -4,8 +4,6 @@ import 'package:real_est_app/utils/size_config.dart';
 
 class SwipperWidget extends StatefulWidget {
   final String? timer;
-
-  // final TextStyle timerStyle;
   final double height;
   final double width;
   final double? iconSize;
@@ -27,8 +25,6 @@ class SwipperWidget extends StatefulWidget {
   const SwipperWidget({
     super.key,
     this.timer,
-    // required  this.timerSize,
-    // this.timerStyle,
     this.height = 48.0,
     this.width = 300,
     this.backgroundColor,
@@ -151,7 +147,6 @@ class SwipperWidgetState extends State<SwipperWidget> {
             child: Text(
               widget.text ?? "Start Buying Now",
               style: widget.textStyle,
-              // Theme.of(context).textTheme.buttonText1.copyWith(color: Colors.white),
             ),
           ),
           AnimatedPositioned(

@@ -79,35 +79,36 @@ PopupMenuItem<int> popupMenuItem(
   String svgAssetName = "",
 }) {
   return PopupMenuItem(
-      value: value,
-      child: Container(
-        padding: EdgeInsets.only(),
-        child: ListTile(
-          title: Text(
-            text,
-            style: TextStyle(
-              color: isSelected ? AppColors.primary : Colors.grey,
-              fontWeight: FontWeight.w500,
-              fontSize: SizeConfig.height(context, h: 35),
-            ),
+    value: value,
+    child: Container(
+      padding: EdgeInsets.only(),
+      child: ListTile(
+        title: Text(
+          text,
+          style: TextStyle(
+            color: isSelected ? AppColors.primary : Colors.grey,
+            fontWeight: FontWeight.w500,
+            fontSize: SizeConfig.height(context, h: 35),
           ),
-          leading: isIconSvg
-              ? SizedBox(
+        ),
+        leading: isIconSvg
+            ? SizedBox(
+                height: SizeConfig.height(context, h: 45),
+                width: SizeConfig.height(context, h: 45),
+                child: SvgPicture.asset(
+                  svgAssetName,
                   height: SizeConfig.height(context, h: 45),
                   width: SizeConfig.height(context, h: 45),
-                  child: SvgPicture.asset(
-                    svgAssetName,
-                    height: SizeConfig.height(context, h: 45),
-                    width: SizeConfig.height(context, h: 45),
-                    colorFilter: ColorFilter.mode(
-                        isSelected ? AppColors.primary : Colors.grey,
-                        BlendMode.srcIn),
-                  ),
-                )
-              : Icon(
-                  icon,
-                  color: isSelected ? AppColors.primary : Colors.grey,
+                  colorFilter: ColorFilter.mode(
+                      isSelected ? AppColors.primary : Colors.grey,
+                      BlendMode.srcIn),
                 ),
-        ),
-      ));
+              )
+            : Icon(
+                icon,
+                color: isSelected ? AppColors.primary : Colors.grey,
+              ),
+      ),
+    ),
+  );
 }

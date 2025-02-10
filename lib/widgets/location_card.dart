@@ -44,7 +44,7 @@ class _LocationCardState extends State<LocationCard>
       child: AnimatedContainer(
         width: widget.isIcon
             ? SizeConfig.height(context, h: 90)
-            : SizeConfig.height(context, h: 170),
+            : SizeConfig.height(context, h: 190),
         duration: const Duration(seconds: 3),
         margin: EdgeInsets.only(left: widget.left ?? 0.0),
         padding: EdgeInsets.all(SizeConfig.height(context, h: 20)),

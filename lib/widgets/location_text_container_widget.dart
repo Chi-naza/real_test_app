@@ -46,7 +46,7 @@ class _LocationTextContainerWidgetState
   Widget build(BuildContext context) {
     return AnimatedContainer(
       width: isStarted
-          ? SizeConfig.width(context, w: 150)
+          ? SizeConfig.width(context, w: 170)
           : SizeConfig.width(context, w: 10),
       duration: const Duration(milliseconds: 1500),
       padding: EdgeInsets.all(10),
@@ -57,6 +57,7 @@ class _LocationTextContainerWidgetState
       child: FadeTransition(
         opacity: locationFadeAnimation,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.location_on,
